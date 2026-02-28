@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-app-deployment
+  labels:
+    app: login-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: login-app
+  template:
+    metadata:
+      labels:
+        app: login-app
+    spec:
+      containers:
+        - name: login-app-container
+          image: eyadrezk/login-app:v1.0
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-app-service
+spec:
+  selector:
+    app: login-app
+  type: NodePort
+  ports:
+    - name: http-login-app
+      protocol: TCP
+      port: 80 #(Service port)
+      nodePort: 30080 #(NodePort range: 30000-32767)
+      targetPort: 80 #(Container port)
