@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  login-app:
+    build: .
+    container_name: login-app-container
+    image: eyadrezk/login-app:v1.0
+    ports:
+      - "5500:80"
